@@ -224,11 +224,12 @@ bool MainWindow::loadRom(const QString &filename)
     bool success = emulator->loadROM(filename.toStdString());
     
     if (success) {
-        // Resume if it was running
-        if (wasRunning) {
-            emulator->resume();
-            cpuTimer.start();
-        }
+        // Always resume after loading a ROM (changed from only resuming if wasRunning)
+        emulator->resume();
+        cpuTimer.start();
+        
+        // Force a display update
+        forceDisplayUpdate();
         
         // Update window title
         setWindowTitle(QString("Chip8 Emulator - %1").arg(QFileInfo(filename).fileName()));
@@ -242,6 +243,29 @@ bool MainWindow::loadRom(const QString &filename)
     
     updateUIState();
     return success;
+}
+
+// Add this new method to force a display update
+void MainWindow::forceDisplayUpdate()
+{
+    // Run a single cycle to update display, even if paused
+    if (emulator) {
+        // Temporarily save paused state
+        bool wasPaused = emulator->isPaused();
+        
+        // Unpause, run one cycle, and restore state
+        if (wasPaused) {
+            emulator->resume();
+        }
+        
+        // Run a cycle to update display
+        emulator->runCycle();
+        
+        // Restore paused state if needed
+        if (wasPaused) {
+            emulator->pause();
+        }
+    }
 }
 
 void MainWindow::updateUIState()

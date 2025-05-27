@@ -71,6 +71,9 @@ private:
     
     // Update UI state based on emulator state
     void updateUIState();
+    
+    // Force display update
+    void forceDisplayUpdate();
 };
 
 #endif // MAINWINDOW_H
