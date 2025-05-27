@@ -45,6 +45,9 @@
         <property name="text">
          <string>Reset</string>
         </property>
+        <property name="toolTip">
+         <string>Reset the emulator</string>
+        </property>
        </widget>
       </item>
       <item>

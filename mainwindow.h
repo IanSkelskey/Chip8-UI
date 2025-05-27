@@ -60,6 +60,9 @@ private:
     // Last loaded ROM path
     QString lastRomPath;
     
+    // Store the last loaded ROM data for reloading after reset
+    std::vector<uint8_t> lastLoadedRomData;
+    
     // Initialize emulator
     void initializeEmulator();
     

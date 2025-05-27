@@ -6,6 +6,8 @@
 #include <QCloseEvent>
 #include <QSettings>
 #include <QStandardPaths>
+#include <QFile>
+#include <QFile>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -78,8 +80,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::runEmulationCycle()
 {
-    // Run a single CPU cycle
-    emulator->runCycle();
+    // Make sure the emulator is not null before running a cycle
+    if (emulator) {
+        emulator->runCycle();
+    }
 }
 
 void MainWindow::updateEmulationTimers()
@@ -127,7 +131,27 @@ void MainWindow::on_actionPause_triggered(bool checked)
 
 void MainWindow::on_actionReset_triggered()
 {
+    // Stop timers before reset to avoid callback issues
+    bool wasRunning = !emulator->isPaused();
+    cpuTimer.stop();
+    
+    // Reset the emulator
     emulator->reset();
+    
+    // Reload the ROM if we have data
+    if (!lastLoadedRomData.empty()) {
+        emulator->loadROM(lastLoadedRomData.data(), lastLoadedRomData.size());
+    }
+    
+    // Force a display update to show the cleared screen
+    forceDisplayUpdate();
+    
+    // Restart timer if the emulator was running before reset
+    if (wasRunning) {
+        emulator->resume();
+        cpuTimer.start();
+    }
+    
     statusBar()->showMessage(tr("Emulator reset"), 2000);
 }
 
@@ -220,11 +244,33 @@ bool MainWindow::loadRom(const QString &filename)
     emulator->pause();
     cpuTimer.stop();
     
-    // Load the ROM
-    bool success = emulator->loadROM(filename.toStdString());
+    // Load the ROM file into a buffer
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(
+            this,
+            tr("Error"),
+            tr("Failed to open ROM file: %1").arg(filename)
+        );
+        return false;
+    }
+    
+    QByteArray romData = file.readAll();
+    file.close();
+    
+    // Store the ROM data for later reloading
+    lastLoadedRomData.clear();
+    lastLoadedRomData.resize(romData.size());
+    std::copy(romData.begin(), romData.end(), lastLoadedRomData.begin());
+    
+    // Load the ROM into the emulator
+    bool success = emulator->loadROM(
+        reinterpret_cast<const uint8_t*>(romData.constData()), 
+        romData.size()
+    );
     
     if (success) {
-        // Always resume after loading a ROM (changed from only resuming if wasRunning)
+        // Always resume after loading a ROM
         emulator->resume();
         cpuTimer.start();
         
@@ -233,6 +279,8 @@ bool MainWindow::loadRom(const QString &filename)
         
         // Update window title
         setWindowTitle(QString("Chip8 Emulator - %1").arg(QFileInfo(filename).fileName()));
+        lastRomPath = QFileInfo(filename).path();
+        statusBar()->showMessage(tr("ROM loaded: %1").arg(QFileInfo(filename).fileName()), 3000);
     } else {
         QMessageBox::critical(
             this,
@@ -248,8 +296,8 @@ bool MainWindow::loadRom(const QString &filename)
 // Add this new method to force a display update
 void MainWindow::forceDisplayUpdate()
 {
-    // Run a single cycle to update display, even if paused
-    if (emulator) {
+    // Only run a cycle if the emulator has a ROM loaded
+    if (emulator && !lastLoadedRomData.empty()) {
         // Temporarily save paused state
         bool wasPaused = emulator->isPaused();
         
@@ -277,6 +325,15 @@ void MainWindow::updateUIState()
     ui->pauseButton->setChecked(isPaused);
     ui->pauseButton->setText(isPaused ? tr("Resume") : tr("Pause"));
     
-    // Enable/disable controls based on emulator state
-    // (Could add more sophisticated state handling here)
+    // Update timer state to match emulator state
+    if (isPaused && cpuTimer.isActive()) {
+        cpuTimer.stop();
+    } else if (!isPaused && !cpuTimer.isActive()) {
+        cpuTimer.start();
+    }
+    
+    // Debug info in status bar
+    QString state = isPaused ? "Paused" : "Running";
+    int speed = ui->speedSlider->value();
+    statusBar()->showMessage(tr("Emulator: %1 - Speed: %2 Hz").arg(state).arg(speed), 2000);
 }
