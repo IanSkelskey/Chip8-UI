@@ -13,8 +13,8 @@ Chip8Audio::Chip8Audio(QObject *parent)
     audioOutput = new QAudioOutput(this);
     player->setAudioOutput(audioOutput);
     
-    // Set default volume
-    audioOutput->setVolume(0.5); // 50%
+    // Set volume to a higher level to make sure it's audible
+    audioOutput->setVolume(0.8); // 80% volume
     
     // Default beep sound file path
     beepSoundFile = ":/sounds/beep.wav";
@@ -36,6 +36,18 @@ Chip8Audio::Chip8Audio(QObject *parent)
     connect(player, &QMediaPlayer::errorOccurred, this, [this](QMediaPlayer::Error error, const QString &errorString) {
         qDebug() << "Media player error: " << error << " - " << errorString;
     });
+    
+    // Connect media status changes for debugging
+    connect(player, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
+        qDebug() << "Media status changed: " << status;
+    });
+    
+    // Connect playback state changes for debugging
+    connect(player, &QMediaPlayer::playbackStateChanged, this, [this](QMediaPlayer::PlaybackState state) {
+        qDebug() << "Playback state changed: " << state;
+    });
+    
+    qDebug() << "Chip8Audio initialized";
 }
 
 Chip8Audio::~Chip8Audio()
@@ -54,7 +66,7 @@ void Chip8Audio::onSoundStateChange(bool active)
         // Start playing the beep sound
         player->play();
         isSoundPlaying = true;
-        qDebug() << "Started playing sound";
+        qDebug() << "Started playing sound - Player state: " << player->playbackState();
     } else if (!active && isSoundPlaying) {
         // Stop playing the beep sound
         player->stop();
@@ -66,5 +78,7 @@ void Chip8Audio::onSoundStateChange(bool active)
 void Chip8Audio::setVolume(int volume)
 {
     // Convert from 0-100 scale to 0.0-1.0 scale
-    audioOutput->setVolume(volume / 100.0);
+    float volumeLevel = volume / 100.0f;
+    audioOutput->setVolume(volumeLevel);
+    qDebug() << "Audio volume set to" << volume << "% (" << volumeLevel << ")";
 }

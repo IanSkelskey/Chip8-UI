@@ -4,15 +4,13 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <memory>
-#include "core/include/api/EmulatorAPI.hpp"
+#include "chip8input.h"
 #include "chip8display.h"
 #include "chip8audio.h"
-#include "chip8input.h"
+#include "core/include/api/EmulatorAPI.hpp"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -23,7 +21,6 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-protected:
     void keyPressEvent(QKeyEvent *event) override;
     void keyReleaseEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
@@ -39,7 +36,6 @@ private slots:
     void on_actionSettings_triggered();
     void on_actionAbout_triggered();
     void on_actionKeyboard_Mapping_triggered();
-    
     void on_resetButton_clicked();
     void on_pauseButton_clicked(bool checked);
     void on_speedSlider_valueChanged(int value);
@@ -47,36 +43,26 @@ private slots:
 private:
     Ui::MainWindow *ui;
     
-    // Emulator components
-    std::unique_ptr<Chip8Emu::API::EmulatorAPI> emulator;
+    // Components
     std::shared_ptr<Chip8Display> display;
     std::shared_ptr<Chip8Audio> audio;
     std::shared_ptr<Chip8Input> input;
+    std::shared_ptr<Chip8Emu::API::EmulatorAPI> emulator;
     
-    // Timers for emulation
-    QTimer cpuTimer;     // For CPU cycles
-    QTimer timerTimer;   // For 60Hz timers
+    // Timers
+    QTimer *cycleTimer;
+    QTimer *timerUpdateTimer;
     
-    // Last loaded ROM path
-    QString lastRomPath;
+    // State tracking
+    int cyclesRun = 0;
+    QString lastLoadedRomPath;
     
-    // Store the last loaded ROM data for reloading after reset
-    std::vector<uint8_t> lastLoadedRomData;
-    
-    // Initialize emulator
-    void initializeEmulator();
-    
-    // Set emulation speed
-    void setEmulationSpeed(int cyclesPerSecond);
-    
-    // Load a ROM file
-    bool loadRom(const QString &filename);
-    
-    // Update UI state based on emulator state
+    // Methods
+    void setEmulationSpeed(int instructionsPerSecond);
+    void startEmulation();
+    void stopEmulation();
     void updateUIState();
-    
-    // Force display update
-    void forceDisplayUpdate();
+    bool loadROM(const QString &filename);
 };
 
 #endif // MAINWINDOW_H

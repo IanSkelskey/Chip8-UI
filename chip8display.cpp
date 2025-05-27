@@ -2,12 +2,14 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QMutexLocker>
+#include <QDebug>
 
 Chip8Display::Chip8Display(QWidget *parent)
     : QWidget(parent)
     , pixelColor(Qt::green)
     , backgroundColor(Qt::black)
     , displayImage(WIDTH, HEIGHT, QImage::Format_RGB32)
+    , frameUpdateCount(0)
 {
     // Initialize display buffer
     currentFrameBuffer.fill(false);
@@ -15,6 +17,11 @@ Chip8Display::Chip8Display(QWidget *parent)
 
     // Set focus policy to receive keyboard events
     setFocusPolicy(Qt::StrongFocus);
+    
+    // Set a minimum size for the widget
+    setMinimumSize(WIDTH * 4, HEIGHT * 4);
+    
+    qDebug() << "Chip8Display initialized with size" << width() << "x" << height();
 }
 
 Chip8Display::~Chip8Display() = default;
@@ -24,7 +31,15 @@ void Chip8Display::onFrameUpdate(const std::array<bool, WIDTH * HEIGHT>& frameBu
     QMutexLocker locker(&displayMutex);
     currentFrameBuffer = frameBuffer;
     updateDisplayImage();
-    update(); // Schedule a repaint
+    
+    // Trigger a repaint using update() to ensure the UI thread processes it
+    update();
+    
+    // Log every 60 frame updates (approximately once per second at 60Hz)
+    frameUpdateCount++;
+    if (frameUpdateCount % 60 == 0) {
+        qDebug() << "Display frame updated" << frameUpdateCount << "times";
+    }
 }
 
 void Chip8Display::setPixelColor(const QColor &color)
@@ -59,6 +74,7 @@ void Chip8Display::resizeEvent(QResizeEvent *event)
 {
     Q_UNUSED(event);
     // Nothing specific needed here, scaling is handled in paintEvent
+    qDebug() << "Display resized to" << width() << "x" << height();
 }
 
 void Chip8Display::updateDisplayImage()

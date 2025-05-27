@@ -27,12 +27,13 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
+    QMutex displayMutex;
     std::array<bool, WIDTH * HEIGHT> currentFrameBuffer;
+    QImage displayImage;
     QColor pixelColor;
     QColor backgroundColor;
-    QImage displayImage;
-    QMutex displayMutex;
-
+    int frameUpdateCount; // Add this line to track frame updates
+    
     void updateDisplayImage();
 };
 
