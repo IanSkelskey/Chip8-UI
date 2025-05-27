@@ -29,6 +29,8 @@ set(PROJECT_SOURCES
         chip8input.cpp
         chip8input.h
         resources.qrc
+        keyboardtestdialog.cpp
+        keyboardtestdialog.h
         ${TS_FILES}
 )
 

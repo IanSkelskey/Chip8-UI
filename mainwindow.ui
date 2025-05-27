@@ -187,11 +187,20 @@
    </property>
   </action>
   <action name="actionKeyboard_Mapping">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/keyboard_icon.png</normaloff>:/icons/keyboard_icon.png</iconset>
+    </property>
    <property name="text">
     <string>Keyboard Mapping</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+K</string>
+   </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

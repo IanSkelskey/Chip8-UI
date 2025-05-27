@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>sounds/beep.wav</file>
         <file>icons/chip8_icon.png</file>
+        <file>icons/keyboard_icon.png</file>
     </qresource>
 </RCC>

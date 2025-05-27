@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 #include <QFile>
 #include <QDebug>
+#include "keyboardtestdialog.h" // Add this line
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -63,6 +64,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     // Pass key events to input handler
     if (!event->isAutoRepeat()) {
+        qDebug() << "MainWindow received key press:" << event->key() << "(" << QKeySequence(event->key()).toString() << ")";
         input->handleKeyPress(event->key());
     }
     QMainWindow::keyPressEvent(event);
@@ -72,6 +74,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
     // Pass key events to input handler
     if (!event->isAutoRepeat()) {
+        qDebug() << "MainWindow received key release:" << event->key() << "(" << QKeySequence(event->key()).toString() << ")";
         input->handleKeyRelease(event->key());
     }
     QMainWindow::keyReleaseEvent(event);
@@ -261,11 +264,10 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_actionKeyboard_Mapping_triggered()
 {
-    QMessageBox::information(this, tr("Keyboard Mapping"),
-                            tr("Keyboard mapping information not implemented yet."));
+    KeyboardTestDialog dialog(input.get(), this);
+    dialog.exec();
 }
 
-// UI button actions
 void MainWindow::on_resetButton_clicked()
 {
     on_actionReset_triggered();
