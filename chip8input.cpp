@@ -16,7 +16,12 @@ Chip8Input::~Chip8Input() = default;
 bool Chip8Input::isKeyPressed(uint8_t key) const
 {
     QMutexLocker locker(&keyMutex);
-    return pressedKeys.contains(key);
+    bool result = pressedKeys.contains(key);
+    // Uncomment for extensive debugging:
+    // if (result) {
+    //     qDebug() << "Key" << key << "is currently pressed";
+    // }
+    return result;
 }
 
 uint8_t Chip8Input::waitForKeyPress()
@@ -51,7 +56,8 @@ void Chip8Input::handleKeyPress(int qtKey)
         // Update last key pressed
         lastKeyPressed = chip8Key;
         
-        qDebug() << "Key pressed - Qt:" << qtKey << "Chip8:" << chip8Key;
+        qDebug() << "Key pressed - Qt:" << qtKey << "(" << QKeySequence(qtKey).toString() << ") Chip8:" << chip8Key;
+        qDebug() << "Total pressed keys:" << pressedKeys.size();
         
         // If waiting for a key press, signal it
         if (waitingForKey) {
@@ -59,7 +65,7 @@ void Chip8Input::handleKeyPress(int qtKey)
             keyWaitCondition.wakeAll();
         }
     } else {
-        qDebug() << "Unmapped key pressed:" << qtKey;
+        qDebug() << "Unmapped key pressed:" << qtKey << "(" << QKeySequence(qtKey).toString() << ")";
     }
 }
 
@@ -74,7 +80,8 @@ void Chip8Input::handleKeyRelease(int qtKey)
         // Remove from pressed keys set
         pressedKeys.remove(chip8Key);
         
-        qDebug() << "Key released - Qt:" << qtKey << "Chip8:" << chip8Key;
+        qDebug() << "Key released - Qt:" << qtKey << "(" << QKeySequence(qtKey).toString() << ") Chip8:" << chip8Key;
+        qDebug() << "Total pressed keys:" << pressedKeys.size();
     }
 }
 

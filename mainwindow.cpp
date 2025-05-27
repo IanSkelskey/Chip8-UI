@@ -46,7 +46,10 @@ MainWindow::MainWindow(QWidget *parent)
     emulator->pause();
     
     // Set default speed
-    setEmulationSpeed(500); // Default to 500 instructions per second
+    setEmulationSpeed(700); // Default to 700 instructions per second
+    
+    // Set focus policy to receive keyboard events
+    setFocusPolicy(Qt::StrongFocus);
     
     qDebug() << "MainWindow initialized, emulator created and connected";
 }
@@ -66,6 +69,9 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     if (!event->isAutoRepeat()) {
         qDebug() << "MainWindow received key press:" << event->key() << "(" << QKeySequence(event->key()).toString() << ")";
         input->handleKeyPress(event->key());
+        // Don't call base implementation to avoid conflicts
+        // with default key handling (like Space for buttons)
+        return;
     }
     QMainWindow::keyPressEvent(event);
 }
@@ -76,6 +82,8 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
     if (!event->isAutoRepeat()) {
         qDebug() << "MainWindow received key release:" << event->key() << "(" << QKeySequence(event->key()).toString() << ")";
         input->handleKeyRelease(event->key());
+        // Don't call base implementation for the same reason
+        return;
     }
     QMainWindow::keyReleaseEvent(event);
 }

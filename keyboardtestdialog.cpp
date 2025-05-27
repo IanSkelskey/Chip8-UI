@@ -14,6 +14,10 @@ KeyboardTestDialog::KeyboardTestDialog(Chip8Input* input, QWidget *parent)
     setWindowIcon(QIcon(":/icons/keyboard_icon.png"));
     setupUI();
     
+    // Make sure we can receive key events
+    setFocusPolicy(Qt::StrongFocus);
+    setFocus();
+    
     // Setup a timer to regularly update the key display
     QTimer* updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, [this]() {
@@ -22,6 +26,12 @@ KeyboardTestDialog::KeyboardTestDialog(Chip8Input* input, QWidget *parent)
         }
     });
     updateTimer->start(50); // 20 updates per second
+    
+    // Always start the dialog with keyboard focus
+    QTimer::singleShot(100, this, [this]() {
+        this->activateWindow();
+        this->setFocus();
+    });
 }
 
 void KeyboardTestDialog::setupUI()
