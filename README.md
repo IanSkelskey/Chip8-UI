@@ -13,7 +13,7 @@ A modern cross-platform CHIP-8 emulator built with Qt and C++. This application 
 
 ## Screenshot
 
-![CHIP-8 Emulator Running Tetris](screenshots/screenshot.png)
+![CHIP-8 Emulator Running Tetris](screenshots/tetris.png)
 
 *Screenshot of the emulator running the Tetris game with the default green-on-black color scheme.*
 
