@@ -25,7 +25,7 @@ A modern cross-platform CHIP-8 emulator built with Qt and C++. This application 
 The project uses Git submodules. Make sure to clone with the `--recursive` flag:
 
 ```bash
-git clone --recursive https://github.com/yourusername/Chip8-UI.git
+git clone --recursive https://github.com/IanSkelskey/Chip8-UI.git
 cd Chip8-UI
 ```
 
