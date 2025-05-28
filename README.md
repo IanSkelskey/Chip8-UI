@@ -11,6 +11,12 @@ A modern cross-platform CHIP-8 emulator built with Qt and C++. This application 
 - Sound support
 - Cross-platform (Windows, macOS, Linux)
 
+## Screenshot
+
+![CHIP-8 Emulator Running Tetris](screenshots/chip8_screenshot.png)
+
+*Screenshot of the emulator running the Tetris game with the default green-on-black color scheme.*
+
 ## Requirements
 
 - C++17 compatible compiler
