@@ -82,6 +82,25 @@ CHIP-8 Keypad:     Keyboard Mapping:
 
 The emulator speed can be adjusted using the slider at the bottom of the application.
 
+#### Quirks Configuration
+
+The emulator supports various quirks that control compatibility with different CHIP-8 implementations:
+
+- **VF Reset**: AND, OR, XOR opcodes reset VF to 0
+- **Memory Increment**: Load/Store opcodes increment I register
+- **Display Wait**: Drawing waits for vertical blank (60Hz limit)
+- **Sprite Clipping**: Sprites clip at screen edges instead of wrapping
+- **Shift VX**: Shift opcodes only use VX (ignore VY)
+- **Jump VX**: BNNN uses VX where X is high nibble of NNN
+
+Predefined profiles are available for common CHIP-8 variants:
+- **Modern**: Most compatible with modern CHIP-8 games
+- **COSMAC VIP**: Original COSMAC VIP behavior
+- **CHIP-48**: CHIP-48 behavior
+- **SUPER-CHIP**: SUPER-CHIP behavior
+
+Access quirks configuration through Settings → Quirks Configuration.
+
 ## Project Structure
 
 The emulator is structured in two main components:

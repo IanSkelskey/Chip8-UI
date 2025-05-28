@@ -31,6 +31,7 @@ set(PROJECT_SOURCES
         resources.qrc
         keyboardtestdialog.cpp
         keyboardtestdialog.h
+        quirksdialog.cpp
         ${TS_FILES}
 )
 

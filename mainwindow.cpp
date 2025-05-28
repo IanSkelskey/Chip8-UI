@@ -8,7 +8,8 @@
 #include <QStandardPaths>
 #include <QFile>
 #include <QDebug>
-#include "keyboardtestdialog.h" // Add this line
+#include "keyboardtestdialog.h"
+#include "quirksdialog.h"  // Make sure this include is here
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -285,6 +286,14 @@ void MainWindow::on_actionKeyboard_Mapping_triggered()
 {
     KeyboardTestDialog dialog(input.get(), this);
     dialog.exec();
+}
+
+void MainWindow::on_actionQuirks_triggered()
+{
+    QuirksDialog dialog(emulator, this);
+    if (dialog.exec() == QDialog::Accepted) {
+        // Quirks updated - you can add any refresh logic here if needed
+    }
 }
 
 void MainWindow::on_resetButton_clicked()

@@ -36,6 +36,7 @@ private slots:
     void on_actionSettings_triggered();
     void on_actionAbout_triggered();
     void on_actionKeyboard_Mapping_triggered();
+    void on_actionQuirks_triggered();
     void on_resetButton_clicked();
     void on_pauseButton_clicked(bool checked);
     void on_speedSlider_valueChanged(int value);
