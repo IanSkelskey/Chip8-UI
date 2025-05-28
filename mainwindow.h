@@ -40,6 +40,7 @@ private slots:
     void on_resetButton_clicked();
     void on_pauseButton_clicked(bool checked);
     void on_speedSlider_valueChanged(int value);
+    void on_actionDisplay_Settings_triggered();
 
 private:
     Ui::MainWindow *ui;

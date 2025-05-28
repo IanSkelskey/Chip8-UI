@@ -21,6 +21,10 @@ public:
     // Set display colors
     void setPixelColor(const QColor& color);
     void setBackgroundColor(const QColor& color);
+    
+    // Get display colors
+    QColor getPixelColor() const { return pixelColor; }
+    QColor getBackgroundColor() const { return backgroundColor; }
 
 protected:
     void paintEvent(QPaintEvent *event) override;

@@ -32,6 +32,9 @@ set(PROJECT_SOURCES
         keyboardtestdialog.cpp
         keyboardtestdialog.h
         quirksdialog.cpp
+        quirksdialog.h
+        displaydialog.cpp
+        displaydialog.h
         ${TS_FILES}
 )
 

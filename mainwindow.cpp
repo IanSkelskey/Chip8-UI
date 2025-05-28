@@ -9,7 +9,8 @@
 #include <QFile>
 #include <QDebug>
 #include "keyboardtestdialog.h"
-#include "quirksdialog.h"  // Make sure this include is here
+#include "quirksdialog.h"
+#include "displaydialog.h"  // Add this include
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -270,9 +271,16 @@ void MainWindow::on_actionReset_triggered()
 
 void MainWindow::on_actionSettings_triggered()
 {
-    // TODO: Implement settings dialog
-    QMessageBox::information(this, tr("Settings"), 
-                            tr("Settings dialog not implemented yet."));
+    // Show the display settings dialog
+    DisplayDialog dialog(display, this);
+    dialog.exec();
+}
+
+// Add this new method for the display settings menu item if it's separate
+void MainWindow::on_actionDisplay_Settings_triggered()
+{
+    DisplayDialog dialog(display, this);
+    dialog.exec();
 }
 
 void MainWindow::on_actionAbout_triggered()
