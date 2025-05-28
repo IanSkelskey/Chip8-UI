@@ -134,8 +134,13 @@ void MainWindow::setEmulationSpeed(int instructionsPerSecond)
     // Make sure we have at least 1ms interval
     intervalMs = std::max(1, intervalMs);
     
-    // Restart timer with new interval
-    cycleTimer->start(intervalMs);
+    // Only start the timer if we're not paused
+    if (!emulator->isPaused()) {
+        cycleTimer->start(intervalMs);
+    } else {
+        // Just set the interval without starting
+        cycleTimer->setInterval(intervalMs);
+    }
     
     qDebug() << "Emulation speed set to" << instructionsPerSecond 
              << "instructions per second (timer interval:" << intervalMs << "ms)";
@@ -146,7 +151,10 @@ void MainWindow::startEmulation()
 {
     if (emulator) {
         emulator->resume();
-        cycleTimer->start(); // Make sure timer is running
+        // Get the current speed and properly start the timer
+        int currentSpeed = emulator->getConfig().cpuSpeed;
+        int intervalMs = 1000 / std::max(1, static_cast<int>(currentSpeed));
+        cycleTimer->start(intervalMs);
         qDebug() << "Emulation started - Timer active:" << cycleTimer->isActive();
     }
 }
@@ -156,6 +164,9 @@ void MainWindow::stopEmulation()
 {
     if (emulator) {
         emulator->pause();
+        // Stop the cycle timer when pausing
+        cycleTimer->stop();
+        qDebug() << "Emulation stopped - Timer active:" << cycleTimer->isActive();
     }
 }
 
