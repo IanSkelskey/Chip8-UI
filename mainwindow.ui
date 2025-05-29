@@ -149,6 +149,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionLoad_ROM">
+   <property name="icon">
+    <iconset theme="document-open"/>
+   </property>
    <property name="text">
     <string>Load ROM...</string>
    </property>
@@ -157,6 +160,9 @@
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset theme="application-exit"/>
+   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -168,6 +174,9 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset theme="media-playback-pause"/>
+   </property>
    <property name="text">
     <string>Pause</string>
    </property>
@@ -176,6 +185,9 @@
    </property>
   </action>
   <action name="actionReset">
+   <property name="icon">
+    <iconset theme="view-refresh"/>
+   </property>
    <property name="text">
     <string>Reset</string>
    </property>
@@ -184,25 +196,33 @@
    </property>
   </action>
   <action name="actionSettings">
+   <property name="icon">
+    <iconset theme="preferences-system"/>
+   </property>
    <property name="text">
     <string>Settings...</string>
    </property>
   </action>
   <action name="actionDisplay_Settings">
+   <property name="icon">
+    <iconset theme="preferences-desktop-display"/>
+   </property>
    <property name="text">
     <string>Display Colors...</string>
    </property>
   </action>
   <action name="actionAbout">
+   <property name="icon">
+    <iconset theme="help-about"/>
+   </property>
    <property name="text">
     <string>About...</string>
    </property>
   </action>
   <action name="actionKeyboard_Mapping">
    <property name="icon">
-    <iconset resource="resources.qrc">
-     <normaloff>:/icons/keyboard_icon.png</normaloff>:/icons/keyboard_icon.png</iconset>
-    </property>
+    <iconset theme="input-keyboard"/>
+   </property>
    <property name="text">
     <string>Keyboard Mapping</string>
    </property>
@@ -211,11 +231,17 @@
    </property>
   </action>
   <action name="actionQuirks">
+   <property name="icon">
+    <iconset theme="preferences-system"/>
+   </property>
    <property name="text">
     <string>Quirks Configuration...</string>
    </property>
   </action>
   <action name="actionLanguage_Settings">
+   <property name="icon">
+    <iconset theme="preferences-desktop-locale"/>
+   </property>
    <property name="text">
     <string>Language...</string>
    </property>

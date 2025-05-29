@@ -11,7 +11,7 @@ KeyboardTestDialog::KeyboardTestDialog(Chip8Input* input, QWidget *parent)
     , input(input)
 {
     setWindowTitle(tr("Keyboard Mapping Test"));
-    setWindowIcon(QIcon(":/icons/keyboard_icon.png"));
+    setWindowIcon(QIcon::fromTheme("input-keyboard"));
     setupUI();
     
     // Make sure we can receive key events
