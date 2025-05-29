@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QDebug>
 #include <QTranslator>
+#include <QStyleFactory>
 #include "keyboardtestdialog.h"
 #include "quirksdialog.h"
 #include "displaydialog.h"
@@ -54,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
     
     // Set focus policy to receive keyboard events
     setFocusPolicy(Qt::StrongFocus);
+    
+    // Initialize theme
+    loadThemePreference();
     
     qDebug() << "MainWindow initialized, emulator created and connected";
 }
@@ -399,4 +403,90 @@ bool MainWindow::switchLanguage(const QString &language)
         qDebug() << "Failed to load translation for" << language;
         return false;
     }
+}
+
+void MainWindow::applyTheme(const QString &themeName)
+{
+    QSettings settings;
+    settings.setValue("theme", themeName);
+    
+    if (themeName == "light") {
+        qApp->setStyle(QStyleFactory::create("Fusion"));
+        QPalette lightPalette;
+        lightPalette.setColor(QPalette::Window, QColor(240, 240, 240));
+        lightPalette.setColor(QPalette::WindowText, Qt::black);
+        lightPalette.setColor(QPalette::Base, QColor(255, 255, 255));
+        lightPalette.setColor(QPalette::AlternateBase, QColor(245, 245, 245));
+        lightPalette.setColor(QPalette::ToolTipBase, QColor(255, 255, 220));
+        lightPalette.setColor(QPalette::ToolTipText, Qt::black);
+        lightPalette.setColor(QPalette::Text, Qt::black);
+        lightPalette.setColor(QPalette::Button, QColor(240, 240, 240));
+        lightPalette.setColor(QPalette::ButtonText, Qt::black);
+        lightPalette.setColor(QPalette::BrightText, Qt::red);
+        lightPalette.setColor(QPalette::Link, QColor(0, 0, 255));
+        lightPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+        lightPalette.setColor(QPalette::HighlightedText, Qt::white);
+        qApp->setPalette(lightPalette);
+    } else if (themeName == "dark") {
+        qApp->setStyle(QStyleFactory::create("Fusion"));
+        QPalette darkPalette;
+        darkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::WindowText, Qt::white);
+        darkPalette.setColor(QPalette::Base, QColor(35, 35, 35));
+        darkPalette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+        darkPalette.setColor(QPalette::ToolTipBase, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::ToolTipText, Qt::white);
+        darkPalette.setColor(QPalette::Text, Qt::white);
+        darkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::ButtonText, Qt::white);
+        darkPalette.setColor(QPalette::BrightText, Qt::red);
+        darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+        darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+        darkPalette.setColor(QPalette::HighlightedText, Qt::black);
+        darkPalette.setColor(QPalette::Active, QPalette::Button, QColor(53, 53, 53));
+        darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::darkGray);
+        darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, Qt::darkGray);
+        darkPalette.setColor(QPalette::Disabled, QPalette::Text, Qt::darkGray);
+        qApp->setPalette(darkPalette);
+    } else {
+        // System theme
+        qApp->setStyle(QStyleFactory::create("Fusion"));
+        qApp->setPalette(qApp->style()->standardPalette());
+    }
+    
+    updateThemeActions();
+    qDebug() << "Applied theme:" << themeName;
+}
+
+void MainWindow::updateThemeActions()
+{
+    QSettings settings;
+    QString currentTheme = settings.value("theme", "system").toString();
+    
+    ui->actionLightTheme->setChecked(currentTheme == "light");
+    ui->actionDarkTheme->setChecked(currentTheme == "dark");
+    ui->actionSystemTheme->setChecked(currentTheme == "system");
+}
+
+void MainWindow::loadThemePreference()
+{
+    QSettings settings;
+    QString themeName = settings.value("theme", "system").toString();
+    applyTheme(themeName);
+}
+
+// Add theme action handlers
+void MainWindow::on_actionLightTheme_triggered()
+{
+    applyTheme("light");
+}
+
+void MainWindow::on_actionDarkTheme_triggered()
+{
+    applyTheme("dark");
+}
+
+void MainWindow::on_actionSystemTheme_triggered()
+{
+    applyTheme("system");
 }

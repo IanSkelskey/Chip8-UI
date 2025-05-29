@@ -142,8 +142,27 @@
     <addaction name="actionQuirks"/>
     <addaction name="actionLanguage_Settings"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuTheme">
+     <property name="title">
+      <string>Theme</string>
+     </property>
+     <property name="icon">
+      <iconset theme="preferences-desktop-theme"/>
+     </property>
+     <addaction name="actionLightTheme"/>
+     <addaction name="actionDarkTheme"/>
+     <addaction name="separator"/>
+     <addaction name="actionSystemTheme"/>
+    </widget>
+    <addaction name="menuTheme"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEmulation"/>
+   <addaction name="menuView"/>
    <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -244,6 +263,42 @@
    </property>
    <property name="text">
     <string>Language...</string>
+   </property>
+  </action>
+  <action name="actionLightTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="weather-clear"/>
+   </property>
+   <property name="text">
+    <string>Light Mode</string>
+   </property>
+  </action>
+  <action name="actionDarkTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="weather-clear-night"/>
+   </property>
+   <property name="text">
+    <string>Dark Mode</string>
+   </property>
+  </action>
+  <action name="actionSystemTheme">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="computer"/>
+   </property>
+   <property name="text">
+    <string>Use System Theme</string>
    </property>
   </action>
  </widget>

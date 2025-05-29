@@ -19,6 +19,10 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("Chip8Emulator");
     QCoreApplication::setApplicationName("Chip8-UI");
     
+    // Enable high DPI scaling
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+    
     // Load Qt translations
     QTranslator qtTranslator;
     if (qtTranslator.load(QLocale::system(), "qt", "_", 

@@ -45,8 +45,12 @@ private slots:
     void on_pauseButton_clicked(bool checked);
     void on_speedSlider_valueChanged(int value);
     void on_actionDisplay_Settings_triggered();
-    // Add a new slot for language settings
     void on_actionLanguage_Settings_triggered();
+    
+    // Add theme-related slots
+    void on_actionLightTheme_triggered();
+    void on_actionDarkTheme_triggered();
+    void on_actionSystemTheme_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -71,6 +75,11 @@ private:
     void stopEmulation();
     void updateUIState();
     bool loadROM(const QString &filename);
+    
+    // Theme-related methods
+    void applyTheme(const QString &themeName);
+    void updateThemeActions();
+    void loadThemePreference();
 };
 
 #endif // MAINWINDOW_H

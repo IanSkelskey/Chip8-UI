@@ -214,6 +214,26 @@ A simple CHIP-8 emulator written in C++ using Qt.</source>
 
 Un emulador CHIP-8 simple escrito en C++ usando Qt.</translation>
     </message>
+    <message>
+        <source>View</source>
+        <translation>Ver</translation>
+    </message>
+    <message>
+        <source>Theme</source>
+        <translation>Tema</translation>
+    </message>
+    <message>
+        <source>Light Mode</source>
+        <translation>Modo Claro</translation>
+    </message>
+    <message>
+        <source>Dark Mode</source>
+        <translation>Modo Oscuro</translation>
+    </message>
+    <message>
+        <source>Use System Theme</source>
+        <translation>Usar Tema del Sistema</translation>
+    </message>
 </context>
 <context>
     <name>QuirksDialog</name>
