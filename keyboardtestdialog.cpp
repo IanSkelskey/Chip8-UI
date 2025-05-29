@@ -10,7 +10,7 @@ KeyboardTestDialog::KeyboardTestDialog(Chip8Input* input, QWidget *parent)
     : QDialog(parent)
     , input(input)
 {
-    setWindowTitle("Keyboard Mapping Test");
+    setWindowTitle(tr("Keyboard Mapping Test"));
     setWindowIcon(QIcon(":/icons/keyboard_icon.png"));
     setupUI();
     
@@ -39,14 +39,14 @@ void KeyboardTestDialog::setupUI()
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     
     // Instructions
-    QLabel* instructionsLabel = new QLabel(
+    QLabel* instructionsLabel = new QLabel(tr(
         "Press keys to test CHIP-8 keyboard mapping.\n"
         "Default mapping:\n"
         "1 2 3 4  ->  1 2 3 C\n"
         "Q W E R  ->  4 5 6 D\n"
         "A S D F  ->  7 8 9 E\n"
         "Z X C V  ->  A 0 B F"
-    );
+    ));
     instructionsLabel->setAlignment(Qt::AlignCenter);
     mainLayout->addWidget(instructionsLabel);
     
@@ -100,7 +100,7 @@ void KeyboardTestDialog::setupUI()
     mainLayout->addLayout(keyGrid);
     
     // Close button
-    QPushButton* closeButton = new QPushButton("Close");
+    QPushButton* closeButton = new QPushButton(tr("Close"));
     connect(closeButton, &QPushButton::clicked, this, &QDialog::accept);
     mainLayout->addWidget(closeButton);
     

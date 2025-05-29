@@ -8,9 +8,11 @@
 #include <QStandardPaths>
 #include <QFile>
 #include <QDebug>
+#include <QTranslator>
 #include "keyboardtestdialog.h"
 #include "quirksdialog.h"
-#include "displaydialog.h"  // Add this include
+#include "displaydialog.h"
+#include "languagedialog.h"  // Add this include
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -179,14 +181,14 @@ void MainWindow::updateUIState()
     
     // Update buttons
     ui->pauseButton->setChecked(isPaused);
-    ui->pauseButton->setText(isPaused ? "Resume" : "Pause");
+    ui->pauseButton->setText(isPaused ? tr("Resume") : tr("Pause"));
     
     // Update menu actions
     ui->actionPause->setChecked(isPaused);
-    ui->actionPause->setText(isPaused ? "Resume" : "Pause");
+    ui->actionPause->setText(isPaused ? tr("Resume") : tr("Pause"));
     
     // Update status bar
-    statusBar()->showMessage(isPaused ? "Emulation paused" : "Emulation running");
+    statusBar()->showMessage(isPaused ? tr("Emulation paused") : tr("Emulation running"));
 }
 
 bool MainWindow::loadROM(const QString &filename)
@@ -318,4 +320,83 @@ void MainWindow::on_speedSlider_valueChanged(int value)
 {
     setEmulationSpeed(value);
     ui->speedValueLabel->setText(QString("%1 Hz").arg(value));
+}
+
+void MainWindow::on_actionLanguage_Settings_triggered()
+{
+    LanguageDialog dialog(this);
+    
+    if (dialog.exec() == QDialog::Accepted) {
+        // User selected a new language, apply it
+        QString langCode = dialog.getSelectedLanguageCode();
+        switchLanguage(langCode);
+    }
+}
+
+bool MainWindow::switchLanguage(const QString &language)
+{
+    // Get the application instance
+    QApplication *app = qobject_cast<QApplication*>(QApplication::instance());
+    if (!app) return false;
+    
+    static QTranslator *translator = nullptr;
+    
+    // Remove current translator if it exists
+    if (translator) {
+        app->removeTranslator(translator);
+        delete translator;
+        translator = nullptr;
+    }
+    
+    // If we're switching to English, we don't need a translator
+    if (language == "en_US") {
+        qDebug() << "Switching to English (US) - no translator needed";
+        // Force UI retranslation even when switching to English
+        ui->retranslateUi(this);
+        return true;
+    }
+    
+    // Create a new translator
+    translator = new QTranslator();
+    
+    // First try to load from resources
+    QString translationPath = ":/translations/";
+    QString baseName = "Chip8-UI_" + language;
+    
+    bool loaded = false;
+    
+    if (translator->load(translationPath + baseName)) {
+        qDebug() << "Loaded translation from resources:" << baseName;
+        loaded = true;
+    }
+    // Then try to load from file system
+    else if (translator->load(baseName, "translations")) {
+        qDebug() << "Loaded translation from file system:" << baseName;
+        loaded = true;
+    }
+    // Try just the language code if full locale failed
+    else if (language.contains("_")) {
+        baseName = "Chip8-UI_" + language.split("_").first();
+        if (translator->load(translationPath + baseName)) {
+            qDebug() << "Loaded translation from resources (language only):" << baseName;
+            loaded = true;
+        } else if (translator->load(baseName, "translations")) {
+            qDebug() << "Loaded translation from file system (language only):" << baseName;
+            loaded = true;
+        }
+    }
+    
+    if (loaded) {
+        // Install the translator
+        app->installTranslator(translator);
+        
+        // Force a UI retranslation
+        ui->retranslateUi(this);
+        
+        qDebug() << "Language switched to" << language;
+        return true;
+    } else {
+        qDebug() << "Failed to load translation for" << language;
+        return false;
+    }
 }

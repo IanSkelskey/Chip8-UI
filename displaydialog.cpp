@@ -10,7 +10,7 @@ DisplayDialog::DisplayDialog(std::shared_ptr<Chip8Display> display, QWidget *par
     : QDialog(parent)
     , display(display)
 {
-    setWindowTitle("Display Settings");
+    setWindowTitle(tr("Display Settings"));
     setModal(true);
     
     // Get current colors from display
@@ -25,14 +25,14 @@ void DisplayDialog::setupUI()
     auto* mainLayout = new QVBoxLayout(this);
     
     // Color configuration group
-    auto* colorGroup = new QGroupBox("Display Colors");
+    auto* colorGroup = new QGroupBox(tr("Display Colors"));
     auto* colorLayout = new QVBoxLayout(colorGroup);
     
     // Pixel (foreground) color
     auto* pixelLayout = new QHBoxLayout();
-    pixelLayout->addWidget(new QLabel("Pixel Color:"));
+    pixelLayout->addWidget(new QLabel(tr("Pixel Color:")));
     
-    pixelColorButton = new QPushButton("Change");
+    pixelColorButton = new QPushButton(tr("Change"));
     connect(pixelColorButton, &QPushButton::clicked, this, &DisplayDialog::onPixelColorClicked);
     pixelLayout->addWidget(pixelColorButton);
     
@@ -46,9 +46,9 @@ void DisplayDialog::setupUI()
     
     // Background color
     auto* bgLayout = new QHBoxLayout();
-    bgLayout->addWidget(new QLabel("Background Color:"));
+    bgLayout->addWidget(new QLabel(tr("Background Color:")));
     
-    backgroundColorButton = new QPushButton("Change");
+    backgroundColorButton = new QPushButton(tr("Change"));
     connect(backgroundColorButton, &QPushButton::clicked, this, &DisplayDialog::onBackgroundColorClicked);
     bgLayout->addWidget(backgroundColorButton);
     
@@ -65,18 +65,18 @@ void DisplayDialog::setupUI()
     // Buttons
     auto* buttonLayout = new QHBoxLayout();
     
-    auto* resetButton = new QPushButton("Reset to Defaults");
+    auto* resetButton = new QPushButton(tr("Reset to Defaults"));
     connect(resetButton, &QPushButton::clicked, this, &DisplayDialog::onResetClicked);
     buttonLayout->addWidget(resetButton);
     
     buttonLayout->addStretch();
     
-    auto* applyButton = new QPushButton("Apply");
+    auto* applyButton = new QPushButton(tr("Apply"));
     applyButton->setDefault(true);
     connect(applyButton, &QPushButton::clicked, this, &DisplayDialog::onApplyClicked);
     buttonLayout->addWidget(applyButton);
     
-    auto* cancelButton = new QPushButton("Cancel");
+    auto* cancelButton = new QPushButton(tr("Cancel"));
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
     buttonLayout->addWidget(cancelButton);
     
@@ -97,7 +97,7 @@ void DisplayDialog::updateBackgroundColorPreview()
 
 void DisplayDialog::onPixelColorClicked()
 {
-    QColor color = QColorDialog::getColor(currentPixelColor, this, "Select Pixel Color");
+    QColor color = QColorDialog::getColor(currentPixelColor, this, tr("Select Pixel Color"));
     if (color.isValid()) {
         currentPixelColor = color;
         updatePixelColorPreview();
@@ -106,7 +106,7 @@ void DisplayDialog::onPixelColorClicked()
 
 void DisplayDialog::onBackgroundColorClicked()
 {
-    QColor color = QColorDialog::getColor(currentBackgroundColor, this, "Select Background Color");
+    QColor color = QColorDialog::getColor(currentBackgroundColor, this, tr("Select Background Color"));
     if (color.isValid()) {
         currentBackgroundColor = color;
         updateBackgroundColorPreview();

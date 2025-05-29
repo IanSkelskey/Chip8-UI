@@ -3,5 +3,7 @@
         <file>sounds/beep.wav</file>
         <file>icons/chip8_icon.png</file>
         <file>icons/keyboard_icon.png</file>
+        <file>translations/Chip8-UI_en_US.qm</file>
+        <file>translations/Chip8-UI_es.qm</file>
     </qresource>
 </RCC>

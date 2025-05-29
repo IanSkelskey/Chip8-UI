@@ -126,10 +126,6 @@
     </property>
     <addaction name="actionPause"/>
     <addaction name="actionReset"/>
-    <addaction name="separator"/>
-    <addaction name="actionSettings"/>
-    <addaction name="actionDisplay_Settings"/>
-    <addaction name="actionQuirks"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -138,8 +134,17 @@
     <addaction name="actionAbout"/>
     <addaction name="actionKeyboard_Mapping"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionDisplay_Settings"/>
+    <addaction name="actionQuirks"/>
+    <addaction name="actionLanguage_Settings"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEmulation"/>
+   <addaction name="menuSettings"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -208,6 +213,11 @@
   <action name="actionQuirks">
    <property name="text">
     <string>Quirks Configuration...</string>
+   </property>
+  </action>
+  <action name="actionLanguage_Settings">
+   <property name="text">
+    <string>Language...</string>
    </property>
   </action>
  </widget>

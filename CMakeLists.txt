@@ -12,7 +12,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Multimedia)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Multimedia)
 
-set(TS_FILES Chip8-UI_en_US.ts)
+set(TS_FILES 
+    translations/Chip8-UI_en_US.ts
+    translations/Chip8-UI_es.ts
+)
 
 # Add the core library
 add_subdirectory(core)
@@ -35,8 +38,13 @@ set(PROJECT_SOURCES
         quirksdialog.h
         displaydialog.cpp
         displaydialog.h
+        languagedialog.cpp
+        languagedialog.h
         ${TS_FILES}
 )
+
+# Create translations directory if it doesn't exist
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/translations)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Chip8-UI

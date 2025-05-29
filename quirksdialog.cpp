@@ -11,7 +11,7 @@ QuirksDialog::QuirksDialog(std::shared_ptr<Chip8Emu::API::EmulatorAPI> emulator,
     : QDialog(parent)
     , emulator(emulator)
 {
-    setWindowTitle("CHIP-8 Quirks Configuration");
+    setWindowTitle(tr("CHIP-8 Quirks Configuration"));
     setModal(true);
 
     // Get current quirks
@@ -27,10 +27,10 @@ void QuirksDialog::setupUI()
 
     // Profile selection
     auto* profileLayout = new QHBoxLayout();
-    profileLayout->addWidget(new QLabel("Profile:"));
+    profileLayout->addWidget(new QLabel(tr("Profile:")));
 
     profileCombo = new QComboBox();
-    profileCombo->addItem("Custom");
+    profileCombo->addItem(tr("Custom"));
     auto profiles = emulator->getAvailableQuirksProfiles();
     for (const auto& profile : profiles) {
         profileCombo->addItem(QString::fromStdString(profile));
@@ -43,49 +43,49 @@ void QuirksDialog::setupUI()
     mainLayout->addLayout(profileLayout);
 
     // Quirks group
-    auto* quirksGroup = new QGroupBox("Individual Quirks");
+    auto* quirksGroup = new QGroupBox(tr("Individual Quirks"));
     auto* quirksLayout = new QVBoxLayout(quirksGroup);
 
     // Add checkboxes for each quirk with improved descriptions
     createQuirkCheckbox(quirksLayout,
-                       "VF Reset",
-                       "Logical operations (AND, OR, XOR) reset VF to 0 (original behavior)",
+                       tr("VF Reset"),
+                       tr("Logical operations (AND, OR, XOR) reset VF to 0 (original behavior)"),
                        Chip8Emu::Quirk::VF_RESET);
 
     createQuirkCheckbox(quirksLayout,
-                       "Memory Increment",
-                       "Load/Store opcodes increment I register (original behavior)",
+                       tr("Memory Increment"),
+                       tr("Load/Store opcodes increment I register (original behavior)"),
                        Chip8Emu::Quirk::MEMORY_INCREMENT);
 
     createQuirkCheckbox(quirksLayout,
-                       "Display Wait",
-                       "Drawing operations wait for vertical blank (limits to 60Hz)",
+                       tr("Display Wait"),
+                       tr("Drawing operations wait for vertical blank (limits to 60Hz)"),
                        Chip8Emu::Quirk::DISPLAY_WAIT);
 
     createQuirkCheckbox(quirksLayout,
-                       "Sprite Clipping",
-                       "Sprites clip at screen edges instead of wrapping around",
+                       tr("Sprite Clipping"),
+                       tr("Sprites clip at screen edges instead of wrapping around"),
                        Chip8Emu::Quirk::SPRITE_CLIPPING);
 
     createQuirkCheckbox(quirksLayout,
-                       "Shift VX Only",
-                       "Shift opcodes only use VX (modern) vs. setting VX to VY before shift (original)",
+                       tr("Shift VX Only"),
+                       tr("Shift opcodes only use VX (modern) vs. setting VX to VY before shift (original)"),
                        Chip8Emu::Quirk::SHIFT_VX);
 
     createQuirkCheckbox(quirksLayout,
-                       "Jump with VX",
-                       "BNNN uses VX where X is high nibble of NNN (SUPER-CHIP) vs. always V0 (original)",
+                       tr("Jump with VX"),
+                       tr("BNNN uses VX where X is high nibble of NNN (SUPER-CHIP) vs. always V0 (original)"),
                        Chip8Emu::Quirk::JUMP_VX);
 
     mainLayout->addWidget(quirksGroup);
 
     // Add more detailed information
-    auto* infoLabel = new QLabel(
+    auto* infoLabel = new QLabel(tr(
         "These quirks control compatibility with different CHIP-8 implementations.\n\n"
         "• Modern profile is best for most recent games\n"
         "• COSMAC VIP profile matches the original 1970s implementation\n"
         "• CHIP-48 and SUPER-CHIP profiles support later variants\n\n"
-        "Some games may require specific quirks to run correctly.");
+        "Some games may require specific quirks to run correctly."));
     infoLabel->setWordWrap(true);
     infoLabel->setStyleSheet("QLabel { color: #444; padding: 10px; }");
     mainLayout->addWidget(infoLabel);
@@ -93,18 +93,18 @@ void QuirksDialog::setupUI()
     // Buttons
     auto* buttonLayout = new QHBoxLayout();
 
-    auto* resetButton = new QPushButton("Reset to Defaults");
+    auto* resetButton = new QPushButton(tr("Reset to Defaults"));
     connect(resetButton, &QPushButton::clicked, this, &QuirksDialog::onResetClicked);
     buttonLayout->addWidget(resetButton);
 
     buttonLayout->addStretch();
 
-    auto* applyButton = new QPushButton("Apply");
+    auto* applyButton = new QPushButton(tr("Apply"));
     applyButton->setDefault(true);
     connect(applyButton, &QPushButton::clicked, this, &QuirksDialog::onApplyClicked);
     buttonLayout->addWidget(applyButton);
 
-    auto* cancelButton = new QPushButton("Cancel");
+    auto* cancelButton = new QPushButton(tr("Cancel"));
     connect(cancelButton, &QPushButton::clicked, this, &QDialog::reject);
     buttonLayout->addWidget(cancelButton);
 

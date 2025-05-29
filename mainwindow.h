@@ -25,6 +25,10 @@ public:
     void keyReleaseEvent(QKeyEvent *event) override;
     void closeEvent(QCloseEvent *event) override;
 
+public slots:
+    // Add a new public slot for language switching
+    bool switchLanguage(const QString &language);
+
 private slots:
     void runEmulationCycle();
     void updateEmulationTimers();
@@ -41,6 +45,8 @@ private slots:
     void on_pauseButton_clicked(bool checked);
     void on_speedSlider_valueChanged(int value);
     void on_actionDisplay_Settings_triggered();
+    // Add a new slot for language settings
+    void on_actionLanguage_Settings_triggered();
 
 private:
     Ui::MainWindow *ui;
