@@ -1,3 +1,5 @@
+<img src="icons/logo.png" width="200" alt="CHIP-8 Emulator Logo">
+
 # CHIP-8 Emulator
 
 A modern cross-platform CHIP-8 emulator built with Qt and C++. This application provides a clean, user-friendly interface for running CHIP-8 ROMs with configurable emulation parameters.

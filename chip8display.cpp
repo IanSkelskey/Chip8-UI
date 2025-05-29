@@ -6,7 +6,7 @@
 
 Chip8Display::Chip8Display(QWidget *parent)
     : QWidget(parent)
-    , pixelColor(Qt::green)
+    , pixelColor(QColor("#e17c45"))
     , backgroundColor(Qt::black)
     , displayImage(WIDTH, HEIGHT, QImage::Format_RGB32)
     , frameUpdateCount(0)

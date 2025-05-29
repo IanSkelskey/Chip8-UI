@@ -11,6 +11,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // Set application icon
+    QIcon appIcon(":/icons/logo.png");
+    a.setWindowIcon(appIcon);
 
     // Application information for settings, etc.
     QCoreApplication::setOrganizationName("Chip8Emulator");
